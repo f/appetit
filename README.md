@@ -23,8 +23,8 @@ All content is driven from a single `apps.json` file, making it easy to add, rem
 ## Quick Start
 
 ```bash
-git clone https://github.com/f/apps.git
-cd apps
+git clone https://github.com/f/appetit.git
+cd appetit
 ```
 
 Serve locally:
