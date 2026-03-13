@@ -61,9 +61,9 @@
             "platform": "iOS",
             "price": "Free",
             "github": "https://github.com/Jubstaaa/pixelate-game-mobile",
-            "homepage": "https://apps.apple.com/tr/app/pixel-guess/id6760237625?l=tr",
+            "homepage": "https://apps.apple.com/tr/app/pixel-guess/id6760237625",
             "language": "TypeScript",
-            "downloadUrl": "https://apps.apple.com/tr/app/pixel-guess/id6760237625?l=tr",
+            "downloadUrl": "https://apps.apple.com/tr/app/pixel-guess/id6760237625",
             "requirements": "iOS 15.1 or later",
             "features": [
                 "Native iOS app built with Expo",
