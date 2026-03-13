@@ -578,11 +578,12 @@ body {
 .app-row {
   display: flex;
   align-items: center;
-  padding: 14px 0;
+  padding: 10px 12px;
+  margin: 0 -12px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background var(--transition);
-  border-radius: 0;
+  border-radius: var(--radius-md);
   gap: 14px;
 }
 
