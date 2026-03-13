@@ -578,7 +578,7 @@ body {
 .app-row {
   display: flex;
   align-items: center;
-  padding: 14px 0;
+  padding: 14px 12px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background var(--transition);
