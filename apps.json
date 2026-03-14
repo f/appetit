@@ -478,6 +478,7 @@
       "language": "Rust",
       "stars": 1,
       "forks": 0,
+      "brew": "brew install f/tap/wvw",
       "downloadUrl": "https://github.com/f/wvw.dev-app/releases/latest",
       "requirements": "macOS 10.15+, Windows 10+, or Linux",
       "features": [
