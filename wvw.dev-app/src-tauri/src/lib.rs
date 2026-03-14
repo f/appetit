@@ -1,12 +1,14 @@
 use tauri::WebviewUrl;
 use tauri::WebviewWindowBuilder;
 
-const INJECT_CSS_JS: &str = r#"
+const INJECT_CSS_JS: &str = r##"
 (function() {
   var css = "body, body * { -webkit-user-select: none !important; user-select: none !important; } " +
     "input, textarea, [contenteditable=\"true\"] { -webkit-user-select: text !important; user-select: text !important; } " +
     ".sidebar-brand { display: none !important; } " +
-    ".sidebar-header { padding-top: 48px !important; }";
+    ".sidebar-header { padding-top: 48px !important; } " +
+    ".sidebar { -webkit-app-region: drag; } " +
+    ".sidebar a, .sidebar button, .sidebar input, .sidebar select, .sidebar textarea, .sidebar .nav-item, .sidebar .theme-toggle, .sidebar .about-btn { -webkit-app-region: no-drag; }";
 
   function injectStyle() {
     if (document.head) {
@@ -24,26 +26,6 @@ const INJECT_CSS_JS: &str = r#"
     }).observe(document.documentElement, { childList: true });
   }
 
-  function markDragRegions() {
-    var selectors = [".sidebar", ".mobile-topbar"];
-    for (var i = 0; i < selectors.length; i++) {
-      var els = document.querySelectorAll(selectors[i]);
-      for (var j = 0; j < els.length; j++) {
-        els[j].setAttribute("data-tauri-drag-region", "");
-      }
-    }
-  }
-
-  function onReady() {
-    markDragRegions();
-    new MutationObserver(markDragRegions).observe(document.body, { childList: true, subtree: true });
-  }
-
-  if (document.body) {
-    onReady();
-  } else {
-    document.addEventListener("DOMContentLoaded", onReady);
-  }
 
   var _origOpen = window.open;
   window.open = function(url, target) {
@@ -81,7 +63,7 @@ const INJECT_CSS_JS: &str = r#"
     }
   }, true);
 })();
-"#;
+"##;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
