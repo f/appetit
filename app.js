@@ -365,12 +365,12 @@
               ${app.links && app.links.length > 0 && !isPaidApp(app) ? `
               <div class="get-dropdown-wrapper">
                 <button class="app-detail-get-btn" data-action="get" data-app="${app.id}"
-                  aria-haspopup="menu" aria-expanded="false" aria-controls="get-dropdown-${app.id}">
+                  aria-expanded="false" aria-controls="get-dropdown-${app.id}">
                   ${getButtonLabel(app)}
                 </button>
-                <div class="get-dropdown" id="get-dropdown-${app.id}" role="menu">
+                <div class="get-dropdown" id="get-dropdown-${app.id}">
                   ${app.links.map(link => `
-                  <a class="get-dropdown-item" href="${sanitizeUrl(link.url)}" target="_blank" rel="noopener" role="menuitem">
+                  <a class="get-dropdown-item" href="${sanitizeUrl(link.url)}" target="_blank" rel="noopener">
                     <span class="get-dropdown-icon">${platformIcon(link.platform)}</span>
                     <span class="get-dropdown-label">${escapeHtml(link.label)}</span>
                     <span class="get-dropdown-arrow">›</span>
