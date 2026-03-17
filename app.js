@@ -11,6 +11,30 @@
   let currentView = "discover";
   let currentApp = null;
 
+  function escapeHtml(str) {
+    if (typeof str !== "string") return "";
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function sanitizeUrl(url) {
+    if (typeof url !== "string") return "#";
+    const trimmed = url.trim();
+    if (!trimmed) return "#";
+    try {
+      const parsed = new URL(trimmed);
+      const protocol = parsed.protocol.toLowerCase();
+      if (protocol === "http:" || protocol === "https:") return parsed.href;
+    } catch (e) {
+      // invalid URL
+    }
+    return "#";
+  }
+
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
@@ -338,16 +362,16 @@
             <div class="app-detail-title">${app.name}</div>
             <div class="app-detail-subtitle">${app.subtitle}</div>
             <div class="app-detail-actions">
-              ${app.links && app.links.length > 0 ? `
+              ${app.links && app.links.length > 0 && !isPaidApp(app) ? `
               <div class="get-dropdown-wrapper">
-                <button class="app-detail-get-btn${isPaidApp(app) ? " buy-btn" : ""}" data-action="get" data-app="${app.id}">
+                <button class="app-detail-get-btn" data-action="get" data-app="${app.id}">
                   ${getButtonLabel(app)}
                 </button>
                 <div class="get-dropdown" id="get-dropdown-${app.id}">
                   ${app.links.map(link => `
-                  <a class="get-dropdown-item" href="${link.url}" target="_blank" rel="noopener">
+                  <a class="get-dropdown-item" href="${sanitizeUrl(link.url)}" target="_blank" rel="noopener">
                     <span class="get-dropdown-icon">${platformIcon(link.platform)}</span>
-                    <span class="get-dropdown-label">${link.label}</span>
+                    <span class="get-dropdown-label">${escapeHtml(link.label)}</span>
                     <span class="get-dropdown-arrow">›</span>
                   </a>`).join("")}
                 </div>
@@ -631,12 +655,12 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
       <div class="modal-icon"${iconContainerStyle(app)}>${renderIcon(app)}</div>
-      <h3>${app.name}</h3>
+      <h3>${escapeHtml(app.name)}</h3>
       <div class="modal-platform-links">
         ${app.links.map(link => `
-        <a class="modal-platform-link" href="${link.url}" target="_blank" rel="noopener">
+        <a class="modal-platform-link" href="${sanitizeUrl(link.url)}" target="_blank" rel="noopener">
           <span class="modal-platform-icon">${platformIcon(link.platform)}</span>
-          <span class="modal-platform-label">${link.label}</span>
+          <span class="modal-platform-label">${escapeHtml(link.label)}</span>
           <span class="modal-platform-chevron">›</span>
         </a>`).join("")}
       </div>

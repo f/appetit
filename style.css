@@ -1646,35 +1646,6 @@ body {
   animation: fadeIn 0.3s ease both;
 }
 
-/* Platform Links (detail page) */
-.platform-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.platform-link-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 20px;
-  border: 1.5px solid var(--border-light);
-  border-radius: 100px;
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  background: none;
-  transition: background var(--transition), border-color var(--transition);
-}
-
-.platform-link-btn:hover {
-  background: var(--get-btn-hover);
-}
-
 /* Modal Platform Links */
 .modal-platform-links {
   display: flex;
