@@ -491,6 +491,77 @@
       "screenshots": []
     },
     {
+      "id": "poke-gate",
+      "name": "Poke Gate",
+      "subtitle": "Remote OS Access for Poke AI",
+      "description": "Let your Poke AI assistant access your machine. Run commands, read files, take screenshots — all from iMessage, Telegram, or SMS.",
+      "longDescription": "Poke Gate exposes your machine to your Poke AI assistant via an MCP tunnel. Run it on your Mac, then message Poke from iMessage, Telegram, or SMS to execute shell commands, read and write files, list directories, take screenshots, and check system info. Available as a native macOS menu bar app or a CLI tool via npx. The menu bar app auto-connects on launch, shows real-time status, and auto-restarts on disconnect. Community project — not affiliated with Poke.",
+      "icon": "https://raw.githubusercontent.com/f/poke-gate/main/assets/logo.png",
+      "iconStyle": {
+        "scale": 1.3,
+        "objectFit": "cover",
+        "borderRadius": "22%"
+      },
+      "category": [
+        "macos",
+        "cli",
+        "developer-tools"
+      ],
+      "platform": "macOS / Node.js",
+      "price": "Free",
+      "github": "https://github.com/f/poke-gate",
+      "homepage": "https://poke.com",
+      "language": "Swift / JavaScript",
+      "stars": 0,
+      "forks": 0,
+      "brew": "brew install f/tap/poke-gate",
+      "installCommand": "npx poke-gate",
+      "downloadUrl": "https://github.com/f/poke-gate/releases/latest",
+      "requirements": "macOS 15+ (app) or Node.js 18+ (CLI)",
+      "features": [
+        "Run any shell command from Poke",
+        "Read and write files remotely",
+        "Take screenshots",
+        "Read images as base64",
+        "Native macOS menu bar app",
+        "CLI alternative via npx poke-gate",
+        "Auto-connect and auto-restart"
+      ],
+      "screenshots": []
+    },
+    {
+      "id": "poke-tui",
+      "name": "Poke TUI",
+      "subtitle": "Terminal Chat for Poke AI",
+      "description": "Chat with your Poke AI assistant from the terminal. An Ink-based TUI that sends messages and receives replies via MCP tunnel.",
+      "longDescription": "Poke TUI is a terminal chat client for Poke — type messages in your terminal and get replies inline, no need to switch to iMessage or Telegram. Built with Ink (React for CLIs), it runs a local MCP server tunneled to Poke's cloud so the agent can respond directly in the terminal. Features a Claude Code-inspired UI with thinking spinner, webhook management, and first-run API key onboarding. Community project — not affiliated with Poke.",
+      "icon": null,
+      "iconEmoji": "🌴",
+      "iconStyle": {},
+      "category": [
+        "cli",
+        "developer-tools"
+      ],
+      "platform": "Node.js",
+      "price": "Free",
+      "github": "https://github.com/f/poke-tui",
+      "homepage": "https://poke.com",
+      "language": "JavaScript",
+      "stars": 0,
+      "forks": 0,
+      "installCommand": "npx poke-tui",
+      "requirements": "Node.js 18+",
+      "features": [
+        "Chat with Poke inline in the terminal",
+        "Replies via MCP tunnel — no iMessage needed",
+        "Claude Code-inspired thinking spinner",
+        "Webhook create and fire support",
+        "First-run API key onboarding",
+        "Built with Ink (React for CLIs)"
+      ],
+      "screenshots": []
+    },
+    {
       "id": "prompts-chat-book",
       "name": "The Interactive Book of Prompting",
       "subtitle": "An Interactive Guide to AI Prompts",
