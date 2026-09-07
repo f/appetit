@@ -72,13 +72,24 @@
     return parts.length ? ` style="${parts.join(";")}"` : "";
   }
 
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    }[c]));
+  }
+
   function renderIcon(app) {
     if (app.icon) {
       const imgSt = iconStyle(app);
       const st = imgSt ? ` style="${imgSt}"` : "";
-      return `<img src="${app.icon}" alt="${app.name}"${st} onerror="this.parentElement.innerHTML='${app.iconEmoji || "📦"}'">`;
+      const fallback = escapeHtml(app.iconEmoji || "📦");
+      return `<img src="${escapeHtml(app.icon)}" alt="${escapeHtml(app.name)}"${st} data-fallback="${fallback}" onerror="this.parentElement.textContent=this.dataset.fallback">`;
     }
-    return app.iconEmoji || "📦";
+    return escapeHtml(app.iconEmoji || "📦");
   }
 
   function starBadge(stars) {
