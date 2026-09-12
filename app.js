@@ -11,6 +11,30 @@
   let currentView = "discover";
   let currentApp = null;
 
+  function escapeHtml(str) {
+    if (typeof str !== "string") return "";
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function sanitizeUrl(url) {
+    if (typeof url !== "string") return "#";
+    const trimmed = url.trim();
+    if (!trimmed) return "#";
+    try {
+      const parsed = new URL(trimmed);
+      const protocol = parsed.protocol.toLowerCase();
+      if (protocol === "http:" || protocol === "https:") return parsed.href;
+    } catch (e) {
+      // invalid URL
+    }
+    return "#";
+  }
+
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
@@ -85,6 +109,16 @@
     return `<span class="star-count"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>${formatNumber(stars)}</span>`;
   }
 
+  function platformIcon(platform) {
+    if (platform === "ios") {
+      return `<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>`;
+    }
+    if (platform === "android") {
+      return `<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v7c0 .83.67 1.5 1.5 1.5S5 17.33 5 16.5v-7C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v7c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-7c0-.83-.67-1.5-1.5-1.5zm-4.97-5.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C14.15 1.23 13.1 1 12 1c-1.1 0-2.15.23-3.12.63L7.4.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.3 1.3C6.34 3.07 5 5.38 5 8h14c0-2.62-1.34-4.93-3.47-5.84zM10 6H9V5h1v1zm5 0h-1V5h1v1z"/></svg>`;
+    }
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+  }
+
   function isPaidApp(app) {
     return app.price && app.price !== "Free" && app.price !== "free";
   }
@@ -95,6 +129,8 @@
 
   function getButtonLabel(app) {
     if (isPaidApp(app)) return app.price;
+    if (app.links && app.links.length > 0) return "Get";
+    if (app.category && (app.category.includes("games") || app.category.includes("entertainment"))) return "Get";
     if (app.brew || app.downloadUrl || app.installCommand) return "Get";
     return "View";
   }
@@ -323,12 +359,27 @@
         <div class="app-detail-header">
           <div class="app-detail-icon"${iconContainerStyle(app)}>${renderIcon(app)}</div>
           <div class="app-detail-title-area">
-            <div class="app-detail-title">${app.name}</div>
-            <div class="app-detail-subtitle">${app.subtitle}</div>
+            <div class="app-detail-title">${escapeHtml(app.name)}</div>
+            <div class="app-detail-subtitle">${escapeHtml(app.subtitle)}</div>
             <div class="app-detail-actions">
+              ${app.links && app.links.length > 0 && !isPaidApp(app) ? `
+              <div class="get-dropdown-wrapper">
+                <button class="app-detail-get-btn" data-action="get" data-app="${app.id}"
+                  aria-expanded="false" aria-controls="get-dropdown-${app.id}">
+                  ${getButtonLabel(app)}
+                </button>
+                <div class="get-dropdown" id="get-dropdown-${app.id}">
+                  ${app.links.map(link => `
+                  <a class="get-dropdown-item" href="${sanitizeUrl(link.url)}" target="_blank" rel="noopener">
+                    <span class="get-dropdown-icon">${platformIcon(link.platform)}</span>
+                    <span class="get-dropdown-label">${escapeHtml(link.label)}</span>
+                    <span class="get-dropdown-arrow">›</span>
+                  </a>`).join("")}
+                </div>
+              </div>` : `
               <button class="app-detail-get-btn${isPaidApp(app) ? " buy-btn" : ""}" data-action="get" data-app="${app.id}">
                 ${getButtonLabel(app)}
-              </button>
+              </button>`}
               <a href="${app.github}" target="_blank" rel="noopener" class="github-link">
                 ${icons.github} View on GitHub
               </a>
@@ -596,6 +647,44 @@
     };
   }
 
+  function showLinksModal(app) {
+    const overlay = $("#modalOverlay");
+    const modal = $("#modal");
+
+    function sanitizeIconContainerStyle(attrStr) {
+      if (typeof attrStr !== "string") return "";
+      const match = attrStr.match(/^\s*style=(["'])([\s\S]*)\1\s*$/i);
+      if (!match) return "";
+      const sanitized = match[2].replace(/["'<>]/g, "");
+      return ` style="${sanitized}"`;
+    }
+
+    modal.innerHTML = `
+      <button class="modal-close" data-action="close-modal">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal-icon"${sanitizeIconContainerStyle(iconContainerStyle(app))}>${renderIcon(app)}</div>
+      <h3>${escapeHtml(app.name)}</h3>
+      <div class="modal-platform-links">
+        ${app.links.map(link => `
+        <a class="modal-platform-link" href="${sanitizeUrl(link.url)}" target="_blank" rel="noopener">
+          <span class="modal-platform-icon">${platformIcon(link.platform)}</span>
+          <span class="modal-platform-label">${escapeHtml(link.label)}</span>
+          <span class="modal-platform-chevron">›</span>
+        </a>`).join("")}
+      </div>
+    `;
+
+    overlay.style.display = "flex";
+    requestAnimationFrame(() => overlay.classList.add("visible"));
+
+    overlay.onclick = (e) => {
+      if (e.target === overlay || e.target.closest("[data-action='close-modal']")) {
+        closeModal();
+      }
+    };
+  }
+
   function closeModal() {
     const overlay = $("#modalOverlay");
     overlay.classList.remove("visible");
@@ -638,6 +727,24 @@
         if (!app) return;
         if (isPaidApp(app)) {
           showBuyModal(app);
+        } else if (app.links && app.links.length > 0) {
+          if (btn.classList.contains("app-detail-get-btn")) {
+            const dropdown = document.getElementById(`get-dropdown-${app.id}`);
+            if (dropdown) {
+              const isOpen = dropdown.classList.contains("open");
+              $$(".get-dropdown.open").forEach(d => {
+                d.classList.remove("open");
+                const prevBtn = d.previousElementSibling;
+                if (prevBtn) prevBtn.setAttribute("aria-expanded", "false");
+              });
+              if (!isOpen) {
+                dropdown.classList.add("open");
+                btn.setAttribute("aria-expanded", "true");
+              }
+            }
+          } else {
+            showLinksModal(app);
+          }
         } else if (app.brew || app.installCommand) {
           showBrewModal(app);
         } else if (app.homepage) {
@@ -760,12 +867,26 @@
   function bindKeyboard() {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
+        $$(".get-dropdown.open").forEach(d => {
+          d.classList.remove("open");
+          const prevBtn = d.previousElementSibling;
+          if (prevBtn) prevBtn.setAttribute("aria-expanded", "false");
+        });
         closeModal();
         if (currentApp) navigate(currentView);
       }
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         $("#searchInput").focus();
+      }
+    });
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".get-dropdown-wrapper")) {
+        $$(".get-dropdown.open").forEach(d => {
+          d.classList.remove("open");
+          const prevBtn = d.previousElementSibling;
+          if (prevBtn) prevBtn.setAttribute("aria-expanded", "false");
+        });
       }
     });
   }
