@@ -73,7 +73,7 @@
       "github": "https://github.com/f/textream",
       "homepage": "https://textream.fka.dev",
       "language": "Swift",
-      "stars": 3782,
+      "stars": 3781,
       "forks": 269,
       "brew": "brew install f/textream/textream",
       "downloadUrl": "https://github.com/f/textream/releases/latest",
@@ -264,8 +264,8 @@
       "github": "https://github.com/f/prompts.chat",
       "homepage": "https://prompts.chat",
       "language": "TypeScript",
-      "stars": 171515,
-      "forks": 22007,
+      "stars": 171625,
+      "forks": 22012,
       "requirements": "Any modern browser",
       "features": [
         "151K+ GitHub stars",
@@ -338,7 +338,7 @@
       "homepage": null,
       "language": "Go",
       "stars": 1624,
-      "forks": 129,
+      "forks": 130,
       "brew": "brew install f/mcptools/mcp",
       "requirements": "macOS, Linux, or Windows",
       "features": [
@@ -374,7 +374,7 @@
       "homepage": "https://blog.fka.dev/git-rewrite-commits/",
       "language": "TypeScript",
       "stars": 1422,
-      "forks": 57,
+      "forks": 58,
       "installCommand": "npx git-rewrite-commits",
       "requirements": "Node.js, Git",
       "features": [
@@ -583,8 +583,8 @@
       "homepage": "https://prompts.chat/book",
       "buyUrl": "https://donate.stripe.com/aFa8wO4NF2S96jDfn4dMI09",
       "language": "TypeScript",
-      "stars": 171515,
-      "forks": 22007,
+      "stars": 171625,
+      "forks": 22012,
       "requirements": "Any modern browser",
       "features": [
         "25 interactive chapters",
