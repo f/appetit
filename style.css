@@ -97,9 +97,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
-  overflow: hidden;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   user-select: none;
   transition: background 0.3s ease, color 0.3s ease;
   overflow-wrap: break-word;
@@ -109,8 +108,7 @@ body {
 .app-store {
   display: flex;
   height: 100vh;
-  max-width: 100vw;
-  overflow: hidden;
+  max-width: 100%;
 }
 
 /* Sidebar */
@@ -1567,7 +1565,7 @@ body {
 @media (max-width: 600px) {
   .content-scroll {
     padding: 16px 12px 32px;
-    max-width: 100vw;
+    max-width: 100%;
     box-sizing: border-box;
   }
 
@@ -1577,7 +1575,6 @@ body {
   .app-detail {
     min-width: 0;
     max-width: 100%;
-    overflow: hidden;
   }
 
   .app-row {
@@ -1601,6 +1598,10 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+
+  .app-detail-actions {
+    justify-content: center;
   }
 
   .app-detail-icon {
@@ -1639,4 +1640,126 @@ body {
 
 .content-scroll > * {
   animation: fadeIn 0.3s ease both;
+}
+
+/* Modal Platform Links */
+.modal-platform-links {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.modal-platform-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.modal-platform-link:last-child {
+  border-bottom: none;
+}
+
+.modal-platform-link:hover {
+  background: var(--row-hover);
+}
+
+.modal-platform-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.modal-platform-label {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.modal-platform-chevron {
+  color: var(--text-tertiary);
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Get Dropdown (detail page) */
+.get-dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.get-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  pointer-events: none;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.get-dropdown.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.get-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.get-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.get-dropdown-item:hover {
+  background: var(--row-hover);
+}
+
+.get-dropdown-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.get-dropdown-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.get-dropdown-arrow {
+  color: var(--text-tertiary);
+  font-size: 18px;
+  line-height: 1;
 }
